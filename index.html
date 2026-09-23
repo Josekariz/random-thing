@@ -1,0 +1,1225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Milk on its way from Uganda. Set tea time and watch the lorry run the Kampala-Nairobi road to make it.">
+<meta name="theme-color" content="#1B7A4B">
+<meta property="og:title" content="Lorry O'Clock">
+<meta property="og:description" content="Milk on its way from Uganda. Set tea time and watch the lorry run the Kampala-Nairobi road to make it.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231B7A4B'/%3E%3Crect x='6' y='26' width='32' height='18' rx='9' fill='%23F4F1E8'/%3E%3Crect x='36' y='24' width='20' height='20' rx='4' fill='%23D0402A'/%3E%3Ccircle cx='18' cy='47' r='6' fill='%23141A16'/%3E%3Ccircle cx='46' cy='47' r='6' fill='%23141A16'/%3E%3C/svg%3E">
+<style>
+  html{color-scheme:light dark;}
+  :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+  body{margin:0;font:14px/1.45 system-ui,-apple-system,sans-serif;}
+  img{max-width:100%;}
+  [hidden]{display:none!important;}
+</style>
+<title>Lorry O'Clock</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&family=Bungee&display=swap">
+<style>
+  :root{
+    --ground:#E7ECE8;
+    --card:#FFFFFF;
+    --card2:#F3F6F2;
+    --ink:#14201A;
+    --muted:#5C6C62;
+    --line:#D2DAD3;
+    --accent:#1B7A4B;
+    --hot:#D0402A;
+    --sun:#E0A012;
+    --sky:#2B7FA8;
+    --ring:rgba(27,122,75,.35);
+    --shadow:0 1px 0 rgba(20,32,26,.05), 0 14px 28px -20px rgba(20,32,26,.65);
+    --display:"Bungee","Arial Black",system-ui,sans-serif;
+    --cond:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+    --body:"Barlow",system-ui,-apple-system,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#0E1512;
+      --card:#151F1A;
+      --card2:#1B2721;
+      --ink:#E7EFE8;
+      --muted:#9AAEA1;
+      --line:#293730;
+      --accent:#49C185;
+      --hot:#FF6F51;
+      --sun:#FFC845;
+      --sky:#6CC3E6;
+      --ring:rgba(73,193,133,.4);
+      --shadow:0 1px 0 rgba(0,0,0,.3), 0 16px 30px -22px #000;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0E1512;
+    --card:#151F1A;
+    --card2:#1B2721;
+    --ink:#E7EFE8;
+    --muted:#9AAEA1;
+    --line:#293730;
+    --accent:#49C185;
+    --hot:#FF6F51;
+    --sun:#FFC845;
+    --sky:#6CC3E6;
+    --ring:rgba(73,193,133,.4);
+    --shadow:0 1px 0 rgba(0,0,0,.3), 0 16px 30px -22px #000;
+  }
+
+  body{background:var(--ground);color:var(--ink);font-family:var(--body);line-height:1.45;}
+  .wrap{max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:18px 36px;display:flex;flex-direction:column;gap:14px;}
+
+  /* ---- masthead ---- */
+  .mast{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 18px;}
+  h1{font-family:var(--display);font-size:clamp(28px,6.4vw,50px);line-height:.98;margin:0;letter-spacing:-.01em;text-wrap:balance;}
+  h1 .o{color:var(--hot);}
+  .tagline{font-family:var(--cond);text-transform:uppercase;letter-spacing:.09em;font-size:clamp(12px,2.4vw,15px);color:var(--muted);font-weight:600;max-width:34ch;}
+  .stripes{display:flex;height:7px;border-radius:99px;overflow:hidden;}
+  .stripes i{flex:1;}
+  .stripes i:nth-child(1){background:var(--hot);}
+  .stripes i:nth-child(2){background:var(--sun);}
+  .stripes i:nth-child(3){background:var(--accent);}
+  .stripes i:nth-child(4){background:var(--sky);}
+
+  /* ---- road scene ---- */
+  .scene{position:relative;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);background:#8FC7DE;}
+  canvas{display:block;width:100%;height:clamp(440px,68vh,760px);}
+  .chip{position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:8px;max-width:min(92%,440px);background:rgba(10,20,15,.72);color:#F4F8F3;padding:7px 12px;border-radius:99px;font-family:var(--cond);text-transform:uppercase;letter-spacing:.09em;font-size:13px;font-weight:600;backdrop-filter:blur(4px);}
+  .chip b{font-family:var(--body);letter-spacing:0;font-weight:600;text-transform:none;font-size:14px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .dot{width:9px;height:9px;border-radius:99px;background:var(--sun);box-shadow:0 0 0 4px rgba(224,160,18,.25);}
+  .dot.rolling{background:#5BD08C;box-shadow:0 0 0 4px rgba(91,208,140,.25);animation:pulse 1.6s ease-in-out infinite;}
+  .dot.done{background:#F4F8F3;box-shadow:0 0 0 4px rgba(244,248,243,.22);}
+  @keyframes pulse{50%{box-shadow:0 0 0 9px rgba(91,208,140,0);}}
+  .ticker{background:#121A16;color:#F2F6F1;padding:10px 14px;font-size:14.5px;display:flex;gap:10px;align-items:baseline;border-top:3px solid var(--sun);}
+  .ticker span{font-family:var(--cond);text-transform:uppercase;letter-spacing:.09em;font-size:12px;font-weight:700;color:var(--sun);flex:none;}
+  .ticker p{margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+  /* ---- board ---- */
+  .board{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:14px;}
+  @media (max-width:720px){.board{grid-template-columns:1fr;}}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px 14px;box-shadow:var(--shadow);}
+  .lbl{font-family:var(--cond);text-transform:uppercase;letter-spacing:.11em;font-size:12px;font-weight:700;color:var(--muted);margin:0 0 6px;}
+  .teatime{font-family:var(--display);font-size:clamp(30px,4.2vw,42px);line-height:.95;margin:0;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .teatime.late{color:var(--hot);}
+  .sub{font-size:14.5px;color:var(--muted);margin:8px 0 0;}
+  .sub b{color:var(--ink);font-weight:600;}
+  .badge{display:inline-flex;align-items:center;gap:7px;margin-top:12px;padding:6px 11px;border-radius:99px;font-family:var(--cond);text-transform:uppercase;letter-spacing:.08em;font-weight:700;font-size:12.5px;background:color-mix(in srgb,var(--hot) 14%,transparent);color:var(--hot);}
+  .badge.ok{background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent);}
+  .copy{margin-top:14px;font-size:12.5px;padding:7px 11px;}
+  .countdown{font-family:var(--cond);font-weight:700;font-size:clamp(22px,3.2vw,30px);font-variant-numeric:tabular-nums;letter-spacing:.01em;margin:0;}
+
+  /* ---- route line ---- */
+  .routewrap{display:flex;flex-direction:column;gap:14px;}
+  .track{position:relative;height:10px;background:var(--card2);border:1px solid var(--line);border-radius:99px;margin:26px 0 4px;}
+  .fill{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--sun),var(--accent));border-radius:99px;width:0;transition:width .45s cubic-bezier(.4,0,.2,1);}
+  .van{position:absolute;top:50%;left:0;transform:translate(-50%,-50%);font-size:22px;line-height:1;transition:left .45s cubic-bezier(.4,0,.2,1);filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));}
+  .stops{display:flex;justify-content:space-between;gap:4px;}
+  .stops div{font-family:var(--cond);text-transform:uppercase;letter-spacing:.06em;font-size:11.5px;font-weight:600;color:var(--muted);flex:1;text-align:center;}
+  .stops div:first-child{text-align:left;}
+  .stops div:last-child{text-align:right;}
+  .stops div.passed{color:var(--accent);}
+  .metrics{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:auto;padding-top:12px;border-top:1px dashed var(--line);}
+  .metric{min-width:88px;}
+  .metric p.val{margin:0;font-family:var(--cond);font-weight:700;font-size:21px;font-variant-numeric:tabular-nums;}
+  .metric p.val.hot{color:var(--hot);}
+
+  /* ---- controls ---- */
+  .controls{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px 17px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:13px;}
+  .row{display:flex;flex-wrap:wrap;gap:9px;align-items:center;}
+  button{font-family:var(--cond);text-transform:uppercase;letter-spacing:.07em;font-weight:700;font-size:14px;color:var(--ink);background:var(--card2);border:1px solid var(--line);border-radius:9px;padding:9px 14px;cursor:pointer;transition:transform .12s ease,background .15s ease,border-color .15s ease;}
+  button:hover{background:var(--ground);border-color:var(--muted);}
+  button:active{transform:translateY(1px);}
+  button:focus-visible{outline:3px solid var(--ring);outline-offset:2px;}
+  button.go{background:var(--accent);border-color:var(--accent);color:#fff;}
+  button.go:hover{filter:brightness(1.08);background:var(--accent);}
+  button.bad{border-color:color-mix(in srgb,var(--hot) 45%,var(--line));}
+  button.bad:hover{background:color-mix(in srgb,var(--hot) 12%,transparent);border-color:var(--hot);}
+  button[aria-pressed="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink);}
+  label.field{display:flex;align-items:center;gap:8px;font-family:var(--cond);text-transform:uppercase;letter-spacing:.08em;font-size:13px;font-weight:700;color:var(--muted);}
+  input[type="number"],input[type="time"]{font-family:var(--body);font-size:15px;font-variant-numeric:tabular-nums;color:var(--ink);background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:7px 9px;width:84px;}
+  input[type="time"]{width:134px;}
+  input:focus-visible{outline:3px solid var(--ring);outline-offset:1px;}
+  .hint{font-size:13.5px;color:var(--muted);margin:0;}
+
+  /* ---- log ---- */
+  .log h2{font-family:var(--cond);text-transform:uppercase;letter-spacing:.11em;font-size:13px;font-weight:700;color:var(--muted);margin:0 0 10px;}
+  ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0;}
+  ol li{display:flex;gap:12px;align-items:baseline;padding:9px 0;border-bottom:1px dashed var(--line);font-size:15px;}
+  ol li:last-child{border-bottom:0;}
+  ol li time{font-family:var(--cond);font-weight:700;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums;flex:none;width:52px;}
+  ol li .mins{margin-left:auto;font-family:var(--cond);font-weight:700;color:var(--hot);flex:none;}
+  ol li .mins.good{color:var(--accent);}
+  .empty{font-size:15px;color:var(--muted);margin:0;}
+  footer{font-size:13.5px;color:var(--muted);text-align:center;padding-top:4px;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important;transition-duration:.001ms !important;}
+  }
+</style>
+
+
+<style>
+  .hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px 20px;align-items:end;}
+  @media (max-width:560px){.hero{grid-template-columns:1fr;}}
+  .setter{display:flex;flex-direction:column;gap:6px;}
+  .setter input[type="time"]{font-family:var(--cond);font-weight:700;font-size:20px;width:150px;padding:9px 11px;}
+  .fixed-note{font-size:14.5px;color:var(--muted);margin:10px 0 0;max-width:40ch;}
+  .fixed-note b{color:var(--ink);font-weight:600;}
+  .held{background:color-mix(in srgb,var(--sun) 18%,transparent);color:var(--sun);}
+  ol li .note{margin-left:auto;font-family:var(--cond);font-weight:700;font-size:13px;color:var(--accent);flex:none;text-transform:uppercase;letter-spacing:.06em;}
+  .phase{display:flex;gap:6px;margin-top:2px;}
+  .phase i{height:5px;flex:1;border-radius:99px;background:var(--card2);border:1px solid var(--line);}
+  .phase i.on{background:var(--accent);border-color:var(--accent);}
+</style>
+
+
+<style>
+  .board{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
+  @media (max-width:640px){.board{grid-template-columns:1fr;}}
+  .setter{display:flex;align-items:center;gap:10px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);}
+  .setter label{font-family:var(--cond);text-transform:uppercase;letter-spacing:.09em;font-size:12.5px;font-weight:700;color:var(--muted);}
+  .setter input[type="time"]{font-family:var(--cond);font-weight:700;font-size:19px;width:142px;padding:8px 10px;font-variant-numeric:tabular-nums;color:var(--ink);background:var(--card2);border:1px solid var(--line);border-radius:9px;}
+  .setter input:focus-visible{outline:3px solid var(--ring);outline-offset:1px;}
+  .fixed-note{font-size:13.5px;color:var(--muted);margin:6px 0 0;max-width:46ch;}
+  .fixed-note b{color:var(--ink);font-weight:600;}
+  .held{background:color-mix(in srgb,var(--sun) 18%,transparent);color:var(--sun);}
+  .phase{display:flex;gap:6px;margin-top:8px;}
+  .phase i{height:5px;flex:1;border-radius:99px;background:var(--card2);border:1px solid var(--line);}
+  .phase i.on{background:var(--accent);border-color:var(--accent);}
+  .phase-lbl{display:flex;justify-content:space-between;gap:6px;margin-top:7px;}
+  .phase-lbl span{font-family:var(--cond);text-transform:uppercase;letter-spacing:.07em;font-size:11px;font-weight:600;color:var(--muted);flex:1;text-align:center;}
+  .phase-lbl span:first-child{text-align:left;} .phase-lbl span:last-child{text-align:right;}
+  .phase-lbl span.on{color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="stripes"><i></i><i></i><i></i><i></i></div>
+
+  <header class="mast">
+    <h1>Lorry <span class="o">O'Clock</span></h1>
+    <p class="tagline">Milk and sugar out of Uganda. Tea when they land.</p>
+  </header>
+
+  <section class="scene">
+    <canvas id="scene" aria-label="A milk lorry followed by a sugar truck, driving to the office tea room"></canvas>
+    <div class="chip"><span class="dot rolling" id="statusDot"></span><b id="statusText">Rolling</b></div>
+    <div class="ticker"><span>Dispatch</span><p id="ticker">Milk and sugar are out of Uganda, running the Kampala–Nairobi road.</p></div>
+  </section>
+
+  <section class="board">
+    <div class="panel">
+      <p class="lbl">Tea is served at</p>
+      <p class="teatime" id="teatime">--:--</p>
+      <p class="badge ok" id="badge">Locked &mdash; the road can't move it</p>
+      <p class="fixed-note" id="teasub">Milk and sugar at the gate <b id="milkAt">--:--</b><span id="milkWhen"></span>. Magic boils it in a second.</p>
+      <div class="setter">
+        <label for="teaSet">Change it</label>
+        <input type="time" id="teaSet" value="10:00">
+      </div>
+    </div>
+
+    <div class="panel">
+      <p class="lbl" id="countLbl">They arrive in</p>
+      <p class="countdown" id="countdown">--:--</p>
+      <div class="phase"><i id="ph1" class="on"></i><i id="ph2"></i><i id="ph3"></i></div>
+      <div class="phase-lbl"><span id="pl1" class="on">On the road</span><span id="pl2">Magic</span><span id="pl3">Served</span></div>
+      <p class="fixed-note" id="dist">&mdash;</p>
+    </div>
+  </section>
+
+  <footer>The road makes them late. Magic does not.</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var KM = 660;                // Kampala to Nairobi by road, give or take
+  var JOURNEY = 45*60000;      // how long the run takes, door to gate
+  var KETTLE = 0;              // both lorries are due when tea is served
+  var MAGIC = 1000;            // then the milk boils in one second
+  var SCHED = 150;             // world units / second, the clock's pace. catch-up is faster. tea never moves.
+
+  /* The road never touches the clock. It only ever stops the lorry. */
+  // hold = seconds it costs the lorry. slow = crawl instead of a dead stop.
+  var KINDS = [
+    {kind:"cows",     label:"Cows on the road",              hold:4.5},
+    {kind:"goat",     label:"Goat negotiation",              hold:3.0},
+    {kind:"police",   label:"Police check",                  hold:6.0},
+    {kind:"bumps",    label:"Speed bumps",                   hold:3.2, slow:0.22},
+    {kind:"weigh",    label:"Weighbridge queue",             hold:6.5},
+    {kind:"border",   label:"Malaba border post",            hold:7.5},
+    {kind:"cones",    label:"Roadworks, single file",        hold:4.5, slow:0.28},
+    {kind:"convoy",   label:"Stuck behind a loaded lorry",   hold:5.5, slow:0.30},
+    {kind:"traffic",  label:"Matatu and a saloon crawling",  hold:4.0, slow:0.34},
+    {kind:"boda",     label:"Boda bodas swarming the lane",  hold:3.5, slow:0.30},
+    {kind:"market",   label:"Market day spilling onto the road", hold:5.0, slow:0.25},
+    {kind:"breakdown",label:"Broken-down truck blocking one lane", hold:5.5},
+    {kind:"fuel",     label:"Fuel stop",                     hold:5.0},
+    {kind:"tyre",     label:"Puncture on the near-side",     hold:5.5},
+    {kind:"chai",     label:"Driver's own chai stop",        hold:5.0},
+    {kind:"mud",      label:"Murram turned to soup",         hold:3.5, slow:0.24}
+  ];
+
+  function hhmm(ms){
+    var d = new Date(ms);
+    return String(d.getHours()).padStart(2,"0") + ":" + String(d.getMinutes()).padStart(2,"0");
+  }
+  function todayAt(str){
+    var p = String(str||"10:00").split(":");
+    var d = new Date();
+    d.setHours(parseInt(p[0],10)||10, parseInt(p[1],10)||0, 0, 0);
+    return d.getTime();
+  }
+
+  var defaultTea = (function(){
+    var d = new Date(Date.now() + 25*60000);
+    d.setMinutes(Math.ceil(d.getMinutes()/5)*5, 0, 0);
+    return d.getTime();
+  })();
+
+  var state = { teaAt: defaultTea, done:false, served:false };
+  try{
+    var raw = localStorage.getItem("lorry-oclock-v3");
+    if(raw){
+      var sv = JSON.parse(raw);
+      if(sv && typeof sv.teaAt === "number" && sv.teaAt > Date.now() - 6*3600000) state.teaAt = sv.teaAt;
+    }
+  }catch(e){}
+  function save(){ try{ localStorage.setItem("lorry-oclock-v3", JSON.stringify({teaAt:state.teaAt})); }catch(e){} }
+
+  function milkAt(){ return state.teaAt - KETTLE; }
+  function departAt(){ return milkAt() - JOURNEY; }
+  function isServed(now){ return (now || Date.now()) >= state.teaAt + MAGIC; }
+  function progress(){
+    return Math.max(0, Math.min(1, (Date.now() - departAt())/JOURNEY));
+  }
+  function elapsedSec(now){ return ((now || Date.now()) - departAt()) / 1000; }
+  function gateCam(){ return SCHED * (JOURNEY / 1000); }
+  function targetCam(now){
+    var e = elapsedSec(now || Date.now());
+    if(e <= 0) return 0;
+    var cap = gateCam(), x = SCHED * e;
+    return x > cap ? cap : x;
+  }
+  function relWhen(ms){
+    var a = new Date(ms), b = new Date();
+    a.setHours(0,0,0,0); b.setHours(0,0,0,0);
+    var d = Math.round((a.getTime() - b.getTime()) / 86400000);
+    return d === 1 ? " tomorrow" : "";
+  }
+
+  var $ = function(id){ return document.getElementById(id); };
+  var elTea=$("teatime"), elMilk=$("milkAt"), elWhen=$("milkWhen"), elBadge=$("badge"), elCount=$("countdown"), elCountLbl=$("countLbl"),
+      elDistNote=$("dist"), elTicker=$("ticker"), elStatus=$("statusText"), elDot=$("statusDot"), elTeaSet=$("teaSet"),
+      ph=[$("ph1"),$("ph2"),$("ph3")], pl=[$("pl1"),$("pl2"),$("pl3")];
+
+  elTeaSet.value = hhmm(state.teaAt);
+  function say(msg){ if(elTicker.textContent !== msg) elTicker.textContent = msg; }
+  function put(el, v){ if(el && el._v !== v){ el._v = v; el.textContent = v; } }
+  function putClass(el, v){ if(el && el._c !== v){ el._c = v; el.className = v; } }
+
+  function render(){
+    var now = Date.now(), p = progress(), arrived = p >= 1, served = isServed(now);
+    var idle = elapsedSec(now) < 0;
+    var atGate = cam >= gateCam() - 2;
+    var held = activeBlock && !served && !arrived && (activeBlock.wait > 0.15 || vel < SCHED * 0.82);
+    var behind = !idle && !arrived && !activeBlock && (targetCam(now) - cam) > SCHED * 2.2;
+    var frac = gateCam() ? cam / gateCam() : 0;
+    kmLeft = (1 - Math.max(0, Math.min(1, frac))) * KM;
+
+    put(elTea, hhmm(state.teaAt));
+    put(elMilk, hhmm(milkAt()));
+    put(elWhen, relWhen(milkAt()));
+
+    if(held){ putClass(elBadge, "badge held"); put(elBadge, "Held up — tea still " + hhmm(state.teaAt)); }
+    else { putClass(elBadge, "badge ok"); put(elBadge, served ? "Served, as promised" : "Locked — the road can't move it"); }
+
+    function clk(ms){
+      var mm = Math.floor(ms/60000), ss = Math.floor((ms%60000)/1000);
+      return (mm >= 60 ? Math.floor(mm/60) + " h " + (mm%60) + " min" : mm + " min " + String(ss).padStart(2,"0") + " s");
+    }
+    var status, dot;
+    if(served){
+      put(elCountLbl, "Status"); put(elCount, "Tea is served");
+      status = "Tea served"; dot = "dot done";
+      put(elDistNote, "Milk and sugar are in. Magic boiled it. Nothing on the road mattered.");
+    }else if(arrived && atGate){
+      put(elCountLbl, "Magic"); put(elCount, "One second");
+      status = "Magic"; dot = "dot";
+      put(elDistNote, "Both of them at the tea room. The milk doesn't argue with magic.");
+    }else if(arrived){
+      put(elCountLbl, "Magic"); put(elCount, "One second");
+      status = "Pulling in"; dot = "dot rolling";
+      put(elDistNote, "Gate's in sight. Tea is still " + hhmm(state.teaAt) + ".");
+    }else{
+      put(elCountLbl, "They arrive in"); put(elCount, clk(Math.max(0, milkAt() - now)));
+      if(idle){ status = "Loading"; dot = "dot"; }
+      else if(activeBlock){ status = activeBlock.label; dot = vel > 8 ? "dot rolling" : "dot"; }
+      else if(behind){ status = "Making up time"; dot = "dot rolling"; }
+      else { status = "Rolling"; dot = "dot rolling"; }
+    if(idle) put(elDistNote, "Still in the Kampala yard. Lorry and sugar truck roll at " + hhmm(departAt()) + ".");
+      else {
+        var pace = ".";
+        if(activeBlock && vel < 24) pace = ", currently standing still.";
+        else if(behind) pace = ", flat out, making up the time.";
+        put(elDistNote, Math.round(kmLeft) + " km to go from the Uganda side" + pace);
+      }
+    }
+    put(elStatus, status);
+    putClass(elDot, dot);
+    if(elStatus.title !== status) elStatus.title = status;
+    [ !arrived, arrived && !served, served ].forEach(function(on,i){
+      putClass(ph[i], on ? "on" : ""); putClass(pl[i], on ? "on" : "");
+    });
+  }
+
+  elTeaSet.addEventListener("change", function(){
+    var t = todayAt(elTeaSet.value);
+    if(t < Date.now() - 15000) t += 24*3600000;          // already gone today, so tomorrow
+    state.teaAt = t;
+    placeOnSchedule();
+    if(isServed()){ state.done = true; state.served = true; }
+    else if(progress() >= 1){ state.done = true; state.served = false; }
+    else { state.done = false; state.served = false; }
+    elTeaSet.value = hhmm(t);
+    if(isServed()) say("Tea is served. " + hhmm(t) + ". Magic did the boiling.");
+    else if(progress() >= 1) say("Both of them at the tea room. Magic takes one second.");
+    else say("Tea set for " + hhmm(t) + relWhen(t) + ". Lorry and sugar truck are due then.");
+    render(); save();
+  });
+
+  /* ---------------- obstacles: theatre only. the clock does not move. ---------------- */
+  var obstacles = [];
+  var activeBlock = null, shoulder = 0, flatTyre = false, idling = false;
+  var HOLD_LEAD = 168;
+  function laneExit(kind){
+    return kind==="cows" || kind==="goat" || kind==="police" || kind==="border" || kind==="breakdown";
+  }
+  function rollsAway(kind){
+    return kind==="convoy" || kind==="traffic" || kind==="boda";
+  }
+  function approachSpeed(room){
+    if(room <= 2) return 0;
+    var zone = 440;
+    if(room >= zone) return SCHED * 1.12;
+    return SCHED * 1.12 * Math.pow(room / zone, 0.82);
+  }
+  var lastKind = null;
+  function canSpawn(now){
+    if(REDUCED) return false;
+    var tLeft = (milkAt() - now) / 1000, e = elapsedSec(now);
+    if(e < 5 || tLeft < 42) return false;
+    if(gateCam() - cam < 900) return false;
+    if(targetCam(now) - cam > SCHED * 7) return false;
+    for(var i=0;i<obstacles.length;i++) if(!obstacles[i].cleared || obstacles[i].out < 1) return false;
+    return true;
+  }
+  function spawn(){
+    var pool = KINDS.filter(function(x){ return x.kind !== lastKind; });
+    var k = pool[Math.floor(Math.random()*pool.length)];
+    lastKind = k.kind;
+    var o = {
+      kind:k.kind, label:k.label, hold:k.hold, slow:k.slow || 0, wait:0, cleared:false, out:0, said:false,
+      wx: cam + Math.max(480, (W / Math.max(SCALE, 0.3)) * 0.92)
+    };
+    if(k.kind === "tyre"){ o.wx = cam; o.stopAt = cam + 360; }
+    obstacles.push(o);
+    say(k.label + " up ahead. Tea is still " + hhmm(state.teaAt) + ".");
+  }
+  var nextEventAt = Date.now() + 8000;
+  function scheduleNext(){ nextEventAt = Date.now() + (18 + Math.random()*14)*1000; }
+  function sortedLine(o){
+    var tea = hhmm(state.teaAt);
+    if(o.kind==="cows") return "The cows have left the road. Upwards. Tea still " + tea + ".";
+    if(o.kind==="goat") return "The goats followed them. Also upwards. Tea still " + tea + ".";
+    return o.label + " sorted. Rolling again — tea unchanged at " + tea + ".";
+  }
+/* ---------------- scene ---------------- */
+  var cvs = $("scene"), ctx = cvs.getContext("2d"), W=0, H=0, horizon=0, roadY=0, SCALE=1;
+  function resize(){
+    var r = cvs.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = Math.max(280, r.width); H = Math.max(160, r.height);
+    cvs.width = Math.round(W*dpr); cvs.height = Math.round(H*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    horizon = H*0.55; roadY = H - Math.max(58, H*0.27);
+    SCALE = H / 300;
+  }
+  var ANCHOR = 0.36;
+  function worldToScreen(wx){ return ANCHOR*W + (wx - cam) * SCALE; }
+  var lastW=0, lastH=0;
+  function resizeIfNeeded(){
+    var r = cvs.getBoundingClientRect();
+    if(Math.abs(r.width-lastW) > 0.5 || Math.abs(r.height-lastH) > 0.5){ lastW=r.width; lastH=r.height; resize(); }
+  }
+  window.addEventListener("resize", resizeIfNeeded);
+  function rnd(n){ var s = Math.sin(n*127.1 + 311.7)*43758.5453; return s - Math.floor(s); }
+
+  var puffs = [];
+
+  function drawSky(){
+    var hr = new Date().getHours(), night = hr < 6 || hr >= 19, stops;
+    if(night) stops = ["#101C33","#2A3E63","#5D5A73"];
+    else if(hr < 8) stops = ["#2E5E86","#7E9FBE","#E8B27A"];
+    else if(hr >= 17) stops = ["#2F6E96","#8FA6C0","#E8A265"];
+    else stops = ["#2F8FC0","#83C4DE","#CFE6E7"];
+    var g = ctx.createLinearGradient(0,0,0,horizon+20);
+    g.addColorStop(0, stops[0]); g.addColorStop(0.62, stops[1]); g.addColorStop(1, stops[2]);
+    ctx.fillStyle = g; ctx.fillRect(0,0,W,horizon+22);
+    if(night){
+      ctx.fillStyle = "rgba(244,241,232,.9)";
+      for(var i=0;i<16;i++){
+        ctx.globalAlpha = 0.35 + rnd(i*2.2)*0.55;
+        ctx.fillRect(rnd(i*9.1)*W, rnd(i*4.4)*horizon*0.62, 1.7, 1.7);
+      }
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = "#F4F1E6";
+      ctx.beginPath(); ctx.arc(W*0.8, horizon*0.28, Math.max(11,H*0.042), 0, 6.2832); ctx.fill();
+    }else{
+      ctx.fillStyle = "rgba(255,226,150,.92)";
+      ctx.beginPath(); ctx.arc(W*0.78, horizon*0.32, Math.max(16,H*0.075), 0, 6.2832); ctx.fill();
+    }
+  }
+  function drawClouds(){
+    var S = 420, off = cam*SCALE*0.03;
+    ctx.fillStyle = "rgba(255,255,255,.72)";
+    for(var i = Math.floor(off/S)-1; i <= Math.floor((off+W)/S)+1; i++){
+      var x = i*S - off + rnd(i*5)*180, y = 24 + rnd(i*11)*horizon*0.3, s = 0.7 + rnd(i*3)*0.6;
+      ctx.beginPath();
+      ctx.arc(x, y, 15*s, 0, 6.2832); ctx.arc(x+17*s, y-6*s, 19*s, 0, 6.2832);
+      ctx.arc(x+38*s, y+2*s, 14*s, 0, 6.2832); ctx.fill();
+    }
+  }
+  function hills(factor, amp, base, color){
+    var off = cam*SCALE*factor;
+    ctx.fillStyle = color; ctx.beginPath(); ctx.moveTo(0,H);
+    for(var x=0; x<=W; x+=8){
+      var wx = x + off;
+      var y = base - amp*(0.55 + 0.45*Math.sin(wx*0.0019)) - amp*0.35*Math.sin(wx*0.0047+1.3);
+      ctx.lineTo(x,y);
+    }
+    ctx.lineTo(W,H); ctx.closePath(); ctx.fill();
+  }
+  function acacia(x, y, s, dark){
+    ctx.fillStyle = dark ? "#2F4A33" : "#3E5E3C";
+    ctx.fillRect(x-1.6*s, y-16*s, 3.2*s, 16*s);
+    ctx.beginPath(); ctx.ellipse(x, y-19*s, 15*s, 5.4*s, 0, 0, 6.2832); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(x-4*s, y-23*s, 8*s, 3.4*s, 0, 0, 6.2832); ctx.fill();
+  }
+  function duka(x, y, s, i){
+    var roof = ["#B7452F","#3E7FA0","#C08A1E"][Math.floor(rnd(i*2.7)*3)];
+    ctx.fillStyle = "#D9CFBA"; ctx.fillRect(x, y-26*s, 48*s, 26*s);
+    ctx.fillStyle = roof; ctx.fillRect(x-4*s, y-32*s, 56*s, 7*s);
+    ctx.fillStyle = "#2E3A33"; ctx.fillRect(x+16*s, y-15*s, 15*s, 15*s);
+    ctx.fillStyle = roof; ctx.fillRect(x+5*s, y-22*s, 38*s, 4*s);
+  }
+  function cow(x, y, s, flip){
+    ctx.save(); ctx.translate(x,y); if(flip) ctx.scale(-1,1);
+    ctx.fillStyle = "#F0EDE6";
+    ctx.beginPath(); ctx.ellipse(0, -9*s, 12*s, 7*s, 0, 0, 6.2832); ctx.fill();
+    ctx.fillStyle = "#3A342E";
+    ctx.beginPath(); ctx.ellipse(-4*s, -11*s, 4*s, 3*s, 0, 0, 6.2832); ctx.fill();
+    ctx.fillRect(-11*s, -4*s, 2.4*s, 5*s); ctx.fillRect(8*s, -4*s, 2.4*s, 5*s);
+    ctx.beginPath(); ctx.ellipse(13*s, -13*s, 4.4*s, 3.4*s, 0, 0, 6.2832); ctx.fill();
+    ctx.fillRect(15*s, -17*s, 1.6*s, 3*s); ctx.fillRect(11*s, -17*s, 1.6*s, 3*s);
+    ctx.restore();
+  }
+  function goat(x, y, s){
+    ctx.fillStyle = "#A9967E";
+    ctx.beginPath(); ctx.ellipse(x, y-7*s, 8*s, 4.6*s, 0, 0, 6.2832); ctx.fill();
+    ctx.fillRect(x-7*s, y-3*s, 1.8*s, 4*s); ctx.fillRect(x+5*s, y-3*s, 1.8*s, 4*s);
+    ctx.beginPath(); ctx.ellipse(x+9*s, y-10*s, 3.2*s, 2.4*s, 0, 0, 6.2832); ctx.fill();
+  }
+  function pole(x, y, s){
+    ctx.fillStyle = "#6B6154"; ctx.fillRect(x-2*s, y-52*s, 4*s, 52*s); ctx.fillRect(x-12*s, y-48*s, 24*s, 3*s);
+  }
+  function matatu(x, y, s){
+    ctx.fillStyle = "#2E6FA8";
+    ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(x-30*s, y-34*s, 60*s, 26*s, 5*s); else ctx.rect(x-30*s, y-34*s, 60*s, 26*s); ctx.fill();
+    ctx.fillStyle = "#E0A012"; ctx.fillRect(x-30*s, y-20*s, 60*s, 4*s);
+    ctx.fillStyle = "#BFE2F2";
+    ctx.fillRect(x-25*s, y-30*s, 16*s, 9*s); ctx.fillRect(x-6*s, y-30*s, 14*s, 9*s); ctx.fillRect(x+11*s, y-30*s, 15*s, 9*s);
+    ctx.fillStyle = "#1E2327";
+    [-18,16].forEach(function(w){ ctx.beginPath(); ctx.arc(x+w*s, y-6*s, 7*s, 0, 6.2832); ctx.fill(); });
+  }
+  function car(x, y, s){
+    ctx.fillStyle = "#C6C2B8";
+    ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(x-22*s, y-20*s, 44*s, 12*s, 4*s); else ctx.rect(x-22*s, y-20*s, 44*s, 12*s); ctx.fill();
+    ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(x-12*s, y-29*s, 22*s, 11*s, 4*s); else ctx.rect(x-12*s, y-29*s, 22*s, 11*s); ctx.fill();
+    ctx.fillStyle = "#BFE2F2"; ctx.fillRect(x-9*s, y-27*s, 16*s, 7*s);
+    ctx.fillStyle = "#1E2327";
+    [-13,13].forEach(function(w){ ctx.beginPath(); ctx.arc(x+w*s, y-7*s, 6.5*s, 0, 6.2832); ctx.fill(); });
+  }
+  function kiosk(x, y, s, t){
+    ctx.fillStyle = "#8C6239"; ctx.fillRect(x-26*s, y-34*s, 52*s, 34*s);
+    ctx.fillStyle = "#D0402A"; ctx.fillRect(x-31*s, y-41*s, 62*s, 8*s);
+    ctx.fillStyle = "#F4F1E8"; ctx.font = "700 " + (9*s) + "px 'Barlow Condensed', sans-serif";
+    ctx.textAlign = "center"; ctx.fillText("CHAI", x, y-35*s); ctx.textAlign = "left";
+    ctx.fillStyle = "#2E3A33"; ctx.fillRect(x-14*s, y-24*s, 28*s, 14*s);
+    ctx.strokeStyle = "rgba(255,255,255,.7)"; ctx.lineWidth = 2*s;
+    ctx.beginPath();
+    for(var yy=0; yy<20; yy+=3){
+      var xx = x + 18*s + Math.sin(yy*0.3 + t/500)*3*s;
+      if(yy===0) ctx.moveTo(xx, y-26*s); else ctx.lineTo(xx, y-26*s-yy*s);
+    }
+    ctx.stroke();
+  }
+  function mud(x, y, s){
+    ctx.fillStyle = "rgba(92,66,40,.75)";
+    ctx.beginPath(); ctx.ellipse(x, y, 56*s, 9*s, 0, 0, 6.2832); ctx.fill();
+    ctx.fillStyle = "rgba(120,92,58,.8)";
+    ctx.beginPath(); ctx.ellipse(x-18*s, y-2*s, 20*s, 5*s, 0, 0, 6.2832); ctx.fill();
+  }
+  var kmLeft = 0;
+  function signpost(x, y, s){
+    ctx.fillStyle = "#8C8577"; ctx.fillRect(x-2*s, y-46*s, 4*s, 46*s);
+    ctx.fillStyle = "#1B7A4B"; ctx.fillRect(x-30*s, y-64*s, 60*s, 20*s);
+    ctx.fillStyle = "#F4F8F3";
+    ctx.textAlign = "center";
+    ctx.font = "700 " + (9*s) + "px 'Barlow Condensed', sans-serif";
+    ctx.fillText("NAIROBI", x, y-56*s);
+    ctx.font = "700 " + (8*s) + "px 'Barlow Condensed', sans-serif";
+    ctx.fillText(Math.round(kmLeft) + " km", x, y-47*s);
+    ctx.textAlign = "left";
+  }
+  function drawMid(){
+    var S = 230, off = cam*SCALE*0.55, base = roadY - 4;
+    for(var i = Math.floor(off/S)-1; i <= Math.floor((off+W)/S)+1; i++){
+      var x = i*S - off + rnd(i*1.7)*90, k = rnd(i*9.1), s = (H/250)*(0.9+rnd(i*4.4)*0.45);
+      if(k < 0.40) acacia(x, base-6, s*1.15, false);
+      else if(k < 0.58) duka(x, base-6, s, i);
+      else if(k < 0.72) cow(x, base-30, s*0.8, rnd(i+4) > 0.5);
+      else if(k < 0.86) pole(x, base-6, s);
+      else if(k < 0.93) { acacia(x, base-6, s*0.8, true); acacia(x+26*s, base-4, s*1.05, false); }
+      else signpost(x, base-6, s);
+    }
+  }
+  function drawFarTrees(){
+    var S = 104, off = cam*SCALE*0.28, base = horizon + 44;
+    for(var i = Math.floor(off/S)-1; i <= Math.floor((off+W)/S)+1; i++)
+      acacia(i*S - off + rnd(i*3.1)*40, base, (H/300)*0.5, true);
+  }
+  function laneY(f){ return roadY + (H-roadY)*f; }   // 0 = far edge, 1 = near edge
+  function drawRoad(){
+    ctx.fillStyle = "#8A9152"; ctx.fillRect(0, roadY-8, W, H-(roadY-8));
+    ctx.fillStyle = "#3A3F42"; ctx.fillRect(0, roadY, W, H-roadY);
+    ctx.fillStyle = "#55595B"; ctx.fillRect(0, roadY, W, 3);
+    ctx.fillStyle = "rgba(240,238,230,.55)"; ctx.fillRect(0, H-4, W, 2);
+    ctx.fillStyle = "rgba(240,238,230,.85)";
+    var S = 70, off = (cam*SCALE) % S, y = laneY(0.42);
+    for(var x = -S; x < W + S; x += S) ctx.fillRect(x - off, y, 34, 3.5);
+    ctx.fillStyle = "rgba(20,22,24,.55)";
+    var P = 380, po = (cam*SCALE) % P;
+    for(var j=-1;j<Math.ceil(W/P)+1;j++){
+      ctx.beginPath(); ctx.ellipse(j*P - po + 120, laneY(0.88), 16, 4, 0, 0, 6.2832); ctx.fill();
+    }
+  }
+  function person(x, y, s, shirt, hat){
+    ctx.fillStyle = shirt; ctx.fillRect(x-3.2*s, y-17*s, 6.4*s, 10*s);
+    ctx.fillStyle = "#3D3A34"; ctx.fillRect(x-3*s, y-7*s, 2.4*s, 7*s); ctx.fillRect(x+0.7*s, y-7*s, 2.4*s, 7*s);
+    ctx.fillStyle = "#77553C"; ctx.beginPath(); ctx.arc(x, y-20*s, 3.4*s, 0, 6.2832); ctx.fill();
+    if(hat){ ctx.fillStyle = hat; ctx.fillRect(x-4.4*s, y-23.4*s, 8.8*s, 2.6*s); }
+  }
+  function bike(x, y, s, col){
+    ctx.fillStyle = "#1E2327";
+    ctx.beginPath(); ctx.arc(x-9*s, y-5*s, 5*s, 0, 6.2832); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+9*s, y-5*s, 5*s, 0, 6.2832); ctx.fill();
+    ctx.strokeStyle = col; ctx.lineWidth = 2.6*s;
+    ctx.beginPath(); ctx.moveTo(x-9*s, y-5*s); ctx.lineTo(x, y-11*s); ctx.lineTo(x+9*s, y-5*s); ctx.stroke();
+    person(x-1*s, y-11*s, s*0.9, col, "#20262B");
+  }
+  function bumps(x, y, s){
+    for(var i=0;i<3;i++){
+      var bx = x + i*34*s;
+      ctx.fillStyle = "#E0A012";
+      ctx.beginPath(); ctx.ellipse(bx, y, 14*s, 4.2*s, 0, Math.PI, 0); ctx.fill();
+      ctx.fillStyle = "#20262B";
+      ctx.beginPath(); ctx.ellipse(bx-5*s, y, 3*s, 4*s, 0, Math.PI, 0); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(bx+5*s, y, 3*s, 4*s, 0, Math.PI, 0); ctx.fill();
+    }
+  }
+  function barrier(x, y, s, len){
+    ctx.fillStyle = "#8C8577"; ctx.fillRect(x-2*s, y-34*s, 4*s, 34*s);
+    for(var i=0;i<len;i++){
+      ctx.fillStyle = (i%2) ? "#D0402A" : "#F4F1E8";
+      ctx.fillRect(x + i*11*s, y-32*s, 11*s, 5*s);
+    }
+  }
+  function police(x, y, s){
+    barrier(x, y, s, 5);
+    person(x+16*s, y+4*s, s, "#1F3D6B", "#14264A");
+    ctx.fillStyle = "#1F3D6B"; ctx.fillRect(x-34*s, y-46*s, 30*s, 12*s);
+    ctx.fillStyle = "#F4F8F3"; ctx.font = "700 " + (8*s) + "px 'Barlow Condensed', sans-serif";
+    ctx.textAlign = "center"; ctx.fillText("POLICE", x-19*s, y-37.5*s); ctx.textAlign = "left";
+  }
+  function weighbridge(x, y, s){
+    ctx.fillStyle = "#2E3A33"; ctx.fillRect(x-20*s, y-2*s, 90*s, 5*s);
+    ctx.fillStyle = "#C9BFAA"; ctx.fillRect(x+34*s, y-40*s, 34*s, 38*s);
+    ctx.fillStyle = "#3E7FA0"; ctx.fillRect(x+30*s, y-46*s, 42*s, 7*s);
+    ctx.fillStyle = "#2E3A33"; ctx.fillRect(x+44*s, y-30*s, 15*s, 12*s);
+    ctx.fillStyle = "#E0A012"; ctx.fillRect(x-22*s, y-46*s, 36*s, 12*s);
+    ctx.fillStyle = "#20262B"; ctx.font = "700 " + (7.5*s) + "px 'Barlow Condensed', sans-serif";
+    ctx.textAlign = "center"; ctx.fillText("WEIGHBRIDGE", x-4*s, y-37.5*s); ctx.textAlign = "left";
+  }
+  function border(x, y, s){
+    ctx.fillStyle = "#C9BFAA"; ctx.fillRect(x+40*s, y-44*s, 40*s, 42*s);
+    ctx.fillStyle = "#D0402A"; ctx.fillRect(x+34*s, y-52*s, 52*s, 9*s);
+    ctx.fillStyle = "#F4F8F3"; ctx.font = "700 " + (9*s) + "px 'Barlow Condensed', sans-serif";
+    ctx.textAlign = "center"; ctx.fillText("MALABA", x+60*s, y-45*s); ctx.textAlign = "left";
+    ctx.fillStyle = "#2E3A33"; ctx.fillRect(x+52*s, y-32*s, 16*s, 14*s);
+    barrier(x, y, s, 6);
+    person(x+24*s, y+4*s, s, "#2C6E49", "#1B4730");
+  }
+  function cones(x, y, s){
+    for(var i=0;i<5;i++){
+      var cx = x + i*26*s;
+      ctx.fillStyle = "#E4642B";
+      ctx.beginPath(); ctx.moveTo(cx-5*s, y); ctx.lineTo(cx, y-13*s); ctx.lineTo(cx+5*s, y); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = "#F4F1E8"; ctx.fillRect(cx-3.4*s, y-8*s, 6.8*s, 2.4*s);
+    }
+    person(x-14*s, y+2*s, s, "#E0A012", "#E0A012");
+  }
+  function loadedLorry(x, y, s, col){
+    ctx.fillStyle = "#2B3138"; ctx.fillRect(x-42*s, y-18*s, 86*s, 7*s);
+    ctx.fillStyle = col;
+    ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(x-42*s, y-44*s, 56*s, 27*s, 3*s); else ctx.rect(x-42*s, y-44*s, 56*s, 27*s); ctx.fill();
+    ctx.fillStyle = "#8C6239";
+    for(var i=0;i<4;i++) ctx.fillRect(x-38*s + i*13*s, y-54*s, 11*s, 11*s);
+    ctx.fillStyle = "#20262B";
+    ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(x+14*s, y-42*s, 30*s, 25*s, 4*s); else ctx.rect(x+14*s, y-42*s, 30*s, 25*s); ctx.fill();
+    ctx.fillStyle = "#9FD8EF"; ctx.fillRect(x+26*s, y-38*s, 15*s, 11*s);
+    ctx.fillStyle = "#1E2327";
+    [-30,-12,32].forEach(function(w){ ctx.beginPath(); ctx.arc(x+w*s, y-8*s, 9*s, 0, 6.2832); ctx.fill(); });
+  }
+  function breakdown(x, y, s){
+    loadedLorry(x, y, s, "#7A8B93");
+    ctx.fillStyle = "#D0402A";
+    ctx.beginPath(); ctx.moveTo(x+52*s, y-2*s); ctx.lineTo(x+59*s, y-16*s); ctx.lineTo(x+66*s, y-2*s); ctx.closePath(); ctx.fill();
+    person(x+70*s, y+2*s, s, "#2E3A33", null);
+  }
+  function market(x, y, s){
+    var cols = ["#D0402A","#E0A012","#2C6E49","#3E7FA0"];
+    for(var i=0;i<4;i++){
+      var mx = x + i*40*s;
+      ctx.fillStyle = cols[i%4];
+      ctx.beginPath(); ctx.ellipse(mx, y-26*s, 19*s, 8*s, 0, Math.PI, 0); ctx.fill();
+      ctx.fillStyle = "#8C8577"; ctx.fillRect(mx-1.4*s, y-26*s, 2.8*s, 16*s);
+      ctx.fillStyle = "#A9967E"; ctx.fillRect(mx-14*s, y-12*s, 28*s, 4*s);
+      person(mx + (i%2 ? 9 : -9)*s, y+2*s, s*0.95, cols[(i+2)%4], null);
+    }
+  }
+  function fuel(x, y, s){
+    ctx.fillStyle = "#C9BFAA"; ctx.fillRect(x+6*s, y-60*s, 78*s, 8*s);
+    ctx.fillStyle = "#8C8577"; ctx.fillRect(x+10*s, y-52*s, 4*s, 50*s); ctx.fillRect(x+76*s, y-52*s, 4*s, 50*s);
+    ctx.fillStyle = "#1B7A4B"; ctx.fillRect(x+34*s, y-30*s, 16*s, 28*s);
+    ctx.fillStyle = "#F4F1E8"; ctx.fillRect(x+37*s, y-26*s, 10*s, 7*s);
+    person(x+58*s, y+2*s, s, "#1B7A4B", null);
+  }
+
+  var traffic = [], nextCar = 0;
+  function updateTraffic(dt, tnow){
+    var margin = W / Math.max(SCALE, 0.35);
+    if(tnow > nextCar && traffic.length < 7){
+      nextCar = tnow + 1100 + Math.random()*2200;
+      var oncoming = Math.random() < 0.55;
+      var at = cam + (oncoming ? margin*1.08 + Math.random()*260 : -margin*0.62 - Math.random()*220);
+      var clear = Math.abs(at - cam) > 200;
+      if(activeBlock && Math.abs(at - activeBlock.wx) < 240) clear = false;
+      for(var q=0;q<traffic.length && clear;q++){
+        if((traffic[q].sp < 0) === oncoming && Math.abs(traffic[q].wx - at) < 210) clear = false;
+      }
+      if(clear) traffic.push({
+        wx: at,
+        kind: (function(){ var r = Math.random(); return r < 0.40 ? "matatu" : (r < 0.80 ? "car" : "lorry"); })(),
+        oncoming: oncoming,
+        sp: oncoming ? -(130 + Math.random()*80) : (26 + Math.random()*36),
+        lane: oncoming ? 0.30 + Math.random()*0.06 : 0.70 + Math.random()*0.05,
+        sc: oncoming ? 0.72 : 0.92
+      });
+    }
+    var blk = (activeBlock && activeBlock.kind !== "tyre" && (!activeBlock.cleared || activeBlock.out < 0.75)) ? activeBlock : null;
+    for(var i=traffic.length-1;i>=0;i--){
+      var v = traffic[i], held = false;
+      if(blk && v.sp < 0){
+        var wall = blk.wx + 170;
+        if(v.wx <= wall + 1){ v.wx = wall; held = true; }
+        else {
+          var nxt = v.wx + v.sp*dt;
+          v.wx = nxt < wall ? wall : nxt;
+          held = v.wx === wall;
+        }
+      }
+      if(!held) v.wx += v.sp*dt;
+      var sx = worldToScreen(v.wx);
+      if(sx < -420 || sx > W + 760) traffic.splice(i,1);
+    }
+    // Same-direction traffic is slower than the milk lorry, so it only ever queues behind.
+    // Pushing it forward was what made vehicles jitter through the lorry and the roadblock.
+    var GAP = 210, same = [], opp = [], k;
+    for(k=0;k<traffic.length;k++) (traffic[k].sp < 0 ? opp : same).push(traffic[k]);
+    for(k=0;k<same.length;k++) if(same[k].wx > cam - GAP) same[k].wx = cam - GAP;
+    same.sort(function(a,b){ return a.wx - b.wx; });
+    for(k=same.length-2;k>=0;k--) if(same[k+1].wx - same[k].wx < GAP) same[k].wx = same[k+1].wx - GAP;
+    opp.sort(function(a,b){ return a.wx - b.wx; });
+    for(k=1;k<opp.length;k++) if(opp[k].wx - opp[k-1].wx < GAP) opp[k].wx = opp[k-1].wx + GAP;
+  }
+  function drawTraffic(){
+    var s = H/250;
+    traffic.slice().sort(function(a,b){ return a.lane - b.lane; }).forEach(function(v){
+      var x = worldToScreen(v.wx), y = laneY(v.lane), sc = s*v.sc;
+      if(x < -200 || x > W + 220) return;
+      ctx.save();
+      if(v.oncoming){ ctx.translate(x, 0); ctx.scale(-1, 1); ctx.translate(-x, 0); }
+      if(v.kind === "matatu") matatu(x, y, sc);
+      else if(v.kind === "lorry") loadedLorry(x, y, sc*0.85, v.oncoming ? "#6B7F8A" : "#A8552F");
+      else car(x, y, sc);
+      ctx.restore();
+    });
+  }
+  function drawObstacles(t){
+    var s0 = H/250;
+    obstacles.forEach(function(o){
+      if(o.kind === "tyre") return;
+      var dist = o.wx - cam;
+      var x = worldToScreen(o.wx);
+      if(x < -340 || x > W + 380) return;
+      var near = Math.max(0, Math.min(1, dist / 560));
+      var s = s0 * (1 - near*0.22);
+      var y = laneY(0.70 - near*0.22);
+      var ox = 0, oy = 0;
+      if(o.kind==="cows" || o.kind==="goat"){
+        var lift = o.out * o.out;
+        ox = o.out * 36 * s + Math.sin(t * 0.006) * 12 * s * o.out;
+        oy = -lift * 128 * s + Math.sin(t * 0.012) * 7 * s * o.out;
+        if(o.out > 0.08){
+          ctx.globalAlpha = 0.28 * (1 - o.out);
+          ctx.fillStyle = "#141A16";
+          ctx.beginPath(); ctx.ellipse(x, y + 6 * s, 16 * s, 3.2 * s, 0, 0, 6.2832); ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+      }else if(o.kind==="boda"){
+        ox = o.out * 240 * s + Math.sin(t*0.007)*12*s;
+        oy = -o.out * 20 * s + Math.sin(t*0.011)*5*s;
+      }else if(o.kind==="police" || o.kind==="border"){
+        oy = -o.out * 50 * s;
+      }else if(o.kind==="breakdown"){
+        oy = o.out * 32 * s;
+      }else if(o.kind==="chai" || o.kind==="fuel" || o.kind==="weigh"){
+        oy = -34 * s * (1 - near);
+      }
+      ctx.save();
+      ctx.translate(ox, oy);
+      if(o.kind === "cows"){
+        cow(x, y, s*1.15, true); cow(x+34*s, y + 6*s, s*1.0, true); cow(x+16*s, y - 9*s, s*0.85, false);
+      }else if(o.kind === "goat"){
+        goat(x, y, s*1.2); goat(x+22*s, y + 5*s, s*1.0);
+      }else if(o.kind === "traffic"){
+        matatu(x, y + 6*s, s); car(x + 64*s, y + 2*s, s);
+      }else if(o.kind === "chai"){
+        kiosk(x, y, s, t);
+      }else if(o.kind === "mud"){
+        mud(x, y + 8*s, s);
+      }else if(o.kind === "bumps"){
+        bumps(x, y + 3*s, s*1.25);
+      }else if(o.kind === "police"){
+        police(x, y, s*1.05);
+      }else if(o.kind === "weigh"){
+        weighbridge(x, y, s);
+      }else if(o.kind === "border"){
+        border(x, y - 2*s, s);
+      }else if(o.kind === "cones"){
+        cones(x, y + 2*s, s);
+      }else if(o.kind === "convoy"){
+        loadedLorry(x, y, s, "#B5562E");
+      }else if(o.kind === "breakdown"){
+        breakdown(x, y, s);
+      }else if(o.kind === "boda"){
+        bike(x, y, s*1.05, "#D0402A"); bike(x+30*s, y + 5*s, s*0.95, "#3E7FA0"); bike(x+58*s, y - 3*s, s, "#E0A012");
+      }else if(o.kind === "market"){
+        market(x, y, s);
+      }else if(o.kind === "fuel"){
+        fuel(x, y, s);
+      }
+      ctx.restore();
+    });
+  }
+  function drawDestination(sx, t){
+    if(sx > W + 220 || sx < -320) return;
+    var base = roadY - 4, s = H/250;
+    ctx.fillStyle = "rgba(138,112,64,.82)";
+    ctx.beginPath(); ctx.ellipse(sx + 8*s, base + 28*s, 168*s, 26*s, 0, 0, 6.2832); ctx.fill();
+    ctx.fillStyle = "#C9BFAA"; ctx.fillRect(sx, base-72*s, 11*s, 72*s); ctx.fillRect(sx+96*s, base-72*s, 11*s, 72*s);
+    ctx.fillStyle = "#1B7A4B"; ctx.fillRect(sx-6*s, base-86*s, 125*s, 17*s);
+    ctx.fillStyle = "#F4F8F3"; ctx.font = "700 " + (11*s) + "px 'Barlow Condensed', sans-serif";
+    ctx.textAlign = "center"; ctx.fillText("TEA ROOM", sx+56*s, base-73.5*s); ctx.textAlign = "left";
+    var kx = sx+56*s, ky = base-20*s;
+    ctx.fillStyle = "#D0402A";
+    ctx.beginPath(); ctx.ellipse(kx, ky, 17*s, 14*s, 0, 0, 6.2832); ctx.fill();
+    ctx.fillRect(kx-5*s, ky-20*s, 10*s, 7*s);
+    ctx.beginPath(); ctx.moveTo(kx+15*s, ky-5*s); ctx.lineTo(kx+27*s, ky-14*s); ctx.lineTo(kx+27*s, ky-8*s); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = magicOn ? "rgba(255,236,170,.95)" : "rgba(255,255,255,.75)"; ctx.lineWidth = 2.4*s;
+    for(var i=0;i<2;i++){
+      ctx.beginPath();
+      for(var yy=0; yy<26; yy+=3){
+        var xx = kx + (i?10:-8)*s + Math.sin(yy*0.25 + t/600 + i)*4*s;
+        if(yy===0) ctx.moveTo(xx, ky-24*s); else ctx.lineTo(xx, ky-24*s-yy*s);
+      }
+      ctx.stroke();
+    }
+  }
+  function drawLorry(x, bounce, spin, moving, tilt, lane){
+    var s = H/235, y = laneY(lane == null ? 0.78 : lane) - 2.5*s + bounce + (flatTyre ? 3.2*s : 0);
+    ctx.save(); ctx.translate(x, y); if(tilt) ctx.rotate(tilt);
+    ctx.fillStyle = "rgba(0,0,0,.22)";
+    ctx.beginPath(); ctx.ellipse(0, 2-bounce, 58*s, 5*s, 0, 0, 6.2832); ctx.fill();
+    ctx.fillStyle = "#2B3138"; ctx.fillRect(-56*s, -18*s, 110*s, 8*s);
+    ctx.fillStyle = "#F4F1E8";
+    ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(-56*s, -44*s, 74*s, 28*s, 13*s); else ctx.rect(-56*s, -44*s, 74*s, 28*s); ctx.fill();
+    ctx.fillStyle = "#1B7A4B"; ctx.fillRect(-40*s, -36*s, 44*s, 11*s);
+    ctx.fillStyle = "#F4F1E8"; ctx.font = "700 " + (9.5*s) + "px 'Barlow Condensed', sans-serif";
+    ctx.textAlign = "center"; ctx.fillText("MAZIWA", -18*s, -27.5*s); ctx.textAlign = "left";
+    ctx.fillStyle = "#D0402A"; ctx.fillRect(-56*s, -19.5*s, 74*s, 3.5*s);
+    ctx.fillStyle = "#E0A012"; ctx.fillRect(-56*s, -23*s, 74*s, 2.2*s);
+    ctx.fillStyle = "#D0402A";
+    ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(20*s, -42*s, 36*s, 26*s, 5*s); else ctx.rect(20*s, -42*s, 36*s, 26*s); ctx.fill();
+    ctx.fillStyle = "#9FD8EF";
+    ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(34*s, -38*s, 20*s, 13*s, 3*s); else ctx.rect(34*s, -38*s, 20*s, 13*s); ctx.fill();
+    ctx.fillStyle = "#E0A012"; ctx.fillRect(54*s, -24*s, 4*s, 4*s);
+    ctx.fillStyle = "#6D757B"; ctx.fillRect(16*s, -52*s, 5*s, 12*s);
+    [-38, -18, 42].forEach(function(wx){
+      var squashed = flatTyre && wx === -38;
+      ctx.save(); ctx.translate(wx*s, -8*s + (squashed ? 4.2*s : 0));
+      ctx.fillStyle = "#1E2327"; ctx.beginPath(); ctx.arc(0,0, squashed ? 6.2*s : 10.5*s,0,6.2832); ctx.fill();
+      ctx.fillStyle = "#CFD6D2"; ctx.beginPath(); ctx.arc(0,0, squashed ? 2.6*s : 5*s,0,6.2832); ctx.fill();
+      if(!squashed){
+        ctx.rotate(spin);
+        ctx.strokeStyle = "#6E777C"; ctx.lineWidth = 1.8*s;
+        ctx.beginPath(); ctx.moveTo(-4*s,0); ctx.lineTo(4*s,0); ctx.moveTo(0,-4*s); ctx.lineTo(0,4*s); ctx.stroke();
+      }
+      ctx.restore();
+    });
+    ctx.restore();
+    if(!REDUCED && (moving || idling) && Math.random() < (moving ? (vel > SCHED*1.18 ? 0.42 : 0.2) : 0.035))
+      puffs.push({x:x+16*s, y:y-52*s, r:2.5+Math.random()*3, life:1, vx:-26-Math.random()*22, vy:-14-Math.random()*12});
+  }
+  function drawSugarTruck(x, bounce, spin, moving, snag, lane){
+    snag = snag || 0;
+    var s = (H/235) * 0.78;
+    var y = laneY(lane == null ? 0.62 : lane) + bounce - 0.2*s;
+    var wob = Math.sin(Date.now() / (moving || snag > 0.35 ? 110 : 480));
+    ctx.save(); ctx.translate(x, y);
+    ctx.fillStyle = "rgba(0,0,0,.2)";
+    ctx.beginPath(); ctx.ellipse(0, 2 - bounce + 0.2*s, 40*s, 3.6*s, 0, 0, 6.2832); ctx.fill();
+    ctx.fillStyle = "#2B3138"; ctx.fillRect(-40*s, -15*s, 78*s, 6*s);
+    ctx.fillStyle = "#E7D7B0";
+    ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(-40*s, -26*s, 50*s, 12*s, 2*s); else ctx.rect(-40*s, -26*s, 50*s, 12*s); ctx.fill();
+    function sack(sx, sy, w, h, tip){
+      ctx.save(); ctx.translate(sx, sy); if(tip) ctx.rotate(tip);
+      ctx.fillStyle = "#F7EBD0";
+      ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(-w/2, -h, w, h, 2.4*s); else ctx.rect(-w/2, -h, w, h); ctx.fill();
+      ctx.fillStyle = "#C9842A"; ctx.fillRect(-w/2, -h*0.62, w, 2*s);
+      ctx.restore();
+    }
+    sack(-28*s, -26*s, 14*s, 12*s, 0);
+    sack(-14*s, -26*s, 14*s, 12*s, 0);
+    sack(0, -26*s, 14*s, 12*s, 0.03);
+    sack(-20*s, -37*s, 13*s, 11*s, -0.04);
+    sack(-6*s, -37*s, 13*s, 11*s, 0.05);
+    var lean = -0.34 - snag * 0.32;
+    sack(-40*s + wob*(1+snag)*s, -26*s, 12*s, 11*s, lean + wob*(0.14 + snag*0.2));
+    ctx.fillStyle = "#6A3E1C"; ctx.font = "700 " + (8*s) + "px 'Barlow Condensed', sans-serif";
+    ctx.textAlign = "center"; ctx.fillText("SUGAR", -14*s, -16.5*s);
+    ctx.strokeStyle = "#8C6239"; ctx.lineWidth = 1.3*s;
+    ctx.beginPath(); ctx.moveTo(-42*s, -22*s); ctx.lineTo(-34*s, -30*s + wob*s); ctx.lineTo(6*s, -24*s); ctx.stroke();
+    ctx.fillStyle = "#2F6F8A";
+    ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(8*s, -40*s, 30*s, 26*s, 4*s); else ctx.rect(8*s, -40*s, 30*s, 26*s); ctx.fill();
+    ctx.fillStyle = "#F4C542"; ctx.fillRect(8*s, -22*s, 30*s, 3*s);
+    ctx.fillStyle = "#D7F1FA";
+    ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(20*s, -36*s, 14*s, 10*s, 2*s); else ctx.rect(20*s, -36*s, 14*s, 10*s); ctx.fill();
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#E0A012"; ctx.fillRect(36*s, -20*s, 3.2*s, 3.2*s);
+    [-24, 24].forEach(function(wx){
+      ctx.save(); ctx.translate(wx*s, -8*s); ctx.rotate(spin);
+      ctx.fillStyle = "#1E2327"; ctx.beginPath(); ctx.arc(0,0,8.2*s,0,6.2832); ctx.fill();
+      ctx.fillStyle = "#CFD6D2"; ctx.beginPath(); ctx.arc(0,0,3.6*s,0,6.2832); ctx.fill();
+      ctx.strokeStyle = "#6E777C"; ctx.lineWidth = 1.4*s;
+      ctx.beginPath(); ctx.moveTo(-3.2*s,0); ctx.lineTo(3.2*s,0); ctx.moveTo(0,-3.2*s); ctx.lineTo(0,3.2*s); ctx.stroke();
+      ctx.restore();
+    });
+    ctx.restore();
+    if(!REDUCED && moving && Math.random() < 0.16)
+      puffs.push({x:x+18*s, y:y-44*s, r:2+Math.random()*2, life:1, vx:-18-Math.random()*14, vy:-10-Math.random()*8});
+  }
+  function drawPuffs(dt){
+    ctx.fillStyle = "rgba(220,220,214,.55)";
+    for(var i=puffs.length-1;i>=0;i--){
+      var p = puffs[i];
+      p.x += p.vx*dt; p.y += p.vy*dt; p.r += 8*dt; p.life -= dt*0.9;
+      if(p.life <= 0){ puffs.splice(i,1); continue; }
+      ctx.globalAlpha = Math.max(0, p.life)*0.6;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.2832); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  
+  /* ---------------- loop ----------------
+     cam never runs ahead of the clock. A stop puts the lorry behind,
+     catch-up spends that debt, and the tea room stays where the schedule put it. */
+  var last = performance.now(), spin = 0, cam = 0, vel = 0, parkT = 0;
+  var sugarX = -240, sugarSpin = 0, sugarSnag = 0, magicOn = false, hurrySaid = false;
+
+  function sugarGap(){
+    var screen = W / Math.max(SCALE, 0.35);
+    var base = Math.max(155, Math.min(190, screen * 0.18));
+    if(activeBlock && vel < 24) return base + 70;
+    return base;
+  }
+  function stepSugar(dt){
+    var held = !!(activeBlock && vel < SCHED * 0.8);
+    sugarSnag += ((held ? 1 : 0) - sugarSnag) * Math.min(1, dt * 0.8);
+    var goal = cam - sugarGap();
+    var sp = 0;
+    if(idling){ sugarX = goal; return; }
+    if(sugarX < goal){
+      if(held && vel < 12) sp = 0;
+      else if(held) sp = SCHED * 0.32;
+      else sp = SCHED * ((goal - sugarX) > 40 ? 1.4 : 0.95);
+      sugarX = Math.min(goal, sugarX + sp * dt);
+    }else if(sugarX > goal){
+      sugarX = Math.max(goal, sugarX - SCHED * 0.45 * dt);
+    }
+    if(sugarX > cam - 140) sugarX = cam - 140;
+    if(!REDUCED && sp > 8){
+      var radius = 8.2 * 0.78 * (H / 235);
+      sugarSpin += (sp * SCALE) * dt / Math.max(6, radius);
+    }
+  }
+
+  function placeOnSchedule(){
+    obstacles.length = 0;
+    activeBlock = null;
+    shoulder = 0;
+    flatTyre = false;
+    cam = targetCam(Date.now());
+    vel = 0;
+    sugarX = cam - 170;
+    sugarSnag = 0;
+    hurrySaid = false;
+    parkT = elapsedSec(Date.now()) >= JOURNEY/1000 ? 1 : 0;
+  }
+  function openingLine(){
+    var now = Date.now();
+    if(isServed(now)) return "Tea is served. " + hhmm(state.teaAt) + ". Magic did the boiling.";
+    if(progress() >= 1) return "Both of them at the tea room. Magic takes one second.";
+    if(elapsedSec(now) < 0) return "Loaded in Kampala. Lorry and sugar truck roll at " + hhmm(departAt()) + ", tea at " + hhmm(state.teaAt) + ".";
+    return "Milk lorry out front, sugar truck behind. Due at the gate " + hhmm(state.teaAt) + ", when tea is served.";
+  }
+  function takeBlock(o){
+    if(!activeBlock || (o.wx - cam) < (activeBlock.wx - cam)) activeBlock = o;
+  }
+  function updateObstacles(dt, tLeft){
+    activeBlock = null;
+    var stopLine = null;
+    if(tLeft < 14){
+      for(var n=0;n<obstacles.length;n++){
+        obstacles[n].cleared = true;
+        obstacles[n].out = 1;
+        obstacles[n].said = true;
+      }
+    }
+    for(var i=obstacles.length-1;i>=0;i--){
+      var o = obstacles[i];
+      if(o.kind === "tyre"){
+        if(o.stopAt == null) o.stopAt = cam + 360;
+        if(!o.cleared){
+          if(vel < 18 && cam >= o.stopAt - 8) o.wait += dt;
+          if(o.wait >= o.hold){ o.cleared = true; say(sortedLine(o)); }
+          else {
+            takeBlock(o);
+            if(o.stopAt > cam - 40 && (stopLine == null || o.stopAt < stopLine)) stopLine = o.stopAt;
+          }
+        }else{
+          o.out = Math.min(1, o.out + dt);
+          if(shoulder < 0.08 && o.out > 0.35) obstacles.splice(i,1);
+        }
+        continue;
+      }
+      var gap = o.wx - cam;
+      var line = o.wx - HOLD_LEAD;
+      if(!o.cleared){
+        if(gap < HOLD_LEAD + 520) takeBlock(o);
+        if(line > cam - 40 && (stopLine == null || line < stopLine)) stopLine = line;
+        if(gap <= HOLD_LEAD + 16 && vel < 22) o.wait += dt;
+        if(o.wait >= o.hold){
+          o.cleared = true;
+          if(!laneExit(o.kind)) say(sortedLine(o));
+        }
+      }
+      if(o.cleared){
+        o.out = Math.min(1, o.out + dt * 0.95);
+        if(rollsAway(o.kind)) o.wx += SCHED * 2.4 * dt;
+        if(laneExit(o.kind) && o.out < 0.8 && tLeft >= 14){
+          takeBlock(o);
+          var holdLine = o.wx - HOLD_LEAD;
+          if(holdLine > cam - 40 && (stopLine == null || holdLine < stopLine)) stopLine = holdLine;
+        }else if(laneExit(o.kind) && !o.said){
+          o.said = true;
+          say(sortedLine(o));
+        }
+        var off = worldToScreen(o.wx);
+        var gone = rollsAway(o.kind) && (o.wx - cam) > 640;
+        if(gone || off < -480) obstacles.splice(i,1);
+      }
+    }
+    return { stopLine: stopLine };
+  }
+
+  function frame(t){
+    var raw = (t - last) / 1000;
+    var jumped = raw > 1.25;
+    if(jumped) placeOnSchedule();
+    var dt = jumped ? 0.016 : Math.min(0.05, Math.max(0, raw));
+    last = t;
+    resizeIfNeeded();
+
+    var nowMs = Date.now();
+    var tgt = targetCam(nowMs);
+    var gate = gateCam();
+    var tLeft = (milkAt() - nowMs) / 1000;
+    var idle = elapsedSec(nowMs) < 0;
+    idling = idle;
+
+    if(REDUCED){
+      obstacles.length = 0;
+      activeBlock = null;
+      cam = tgt;
+      vel = (idle || cam >= gate - 0.5) ? 0 : SCHED;
+    }else if(idle){
+      activeBlock = null;
+      vel = 0;
+      cam = 0;
+    }else if(!jumped){
+      if(nowMs > nextEventAt){
+        if(canSpawn(nowMs)) spawn();
+        scheduleNext();
+      }
+      var limits = updateObstacles(dt, tLeft);
+      var allow = Math.min(gate, tgt + SCHED * dt);
+      var room = allow - cam;
+      var wants = 0;
+      var sec = (tgt - cam) / SCHED;
+      if(room > 0){
+        var braking = limits.stopLine != null && (limits.stopLine - cam) < 420;
+        var hot = tLeft < 48 && sec > 0.5 && !braking;
+        var catchUp = braking ? 0 : Math.min(hot ? 1.75 : 0.9, Math.max(0, sec) * 0.5);
+        wants = SCHED * (1 + catchUp);
+        if(braking) wants = Math.min(wants, approachSpeed(limits.stopLine - cam));
+        wants = Math.min(wants, room / Math.max(dt, 0.016));
+        if(hot && sec > 1.2 && !hurrySaid){
+          hurrySaid = true;
+          say("Flat out, making up the time. Tea is still " + hhmm(state.teaAt) + ".");
+        }
+      }
+      if(sec < 0.35) hurrySaid = false;
+      var gain = wants < vel ? 7 : 2.5;
+      vel += (wants - vel) * Math.min(1, dt * gain);
+      if(vel < 0.35) vel = 0;
+      cam += vel * dt;
+      if(limits.stopLine != null && cam > limits.stopLine && cam - limits.stopLine < 90){
+        cam = limits.stopLine; vel = 0;
+      }
+      if(cam > allow){ cam = allow; if(vel > SCHED) vel = SCHED; }
+      if(cam > gate){ cam = gate; vel = 0; }
+      if(cam < 0) cam = 0;
+    }
+
+    var pulling = false;
+    if(!REDUCED){
+      for(var s=0;s<obstacles.length;s++) if(obstacles[s].kind==="tyre" && !obstacles[s].cleared) pulling = true;
+    }
+    shoulder += ((pulling ? 1 : 0) - shoulder) * Math.min(1, dt * 1.7);
+    flatTyre = shoulder > 0.2;
+
+    var parked = !idle && cam >= gate - 1.5 && elapsedSec(nowMs) >= JOURNEY/1000 - 0.05;
+    parkT = parked ? Math.min(1, parkT + dt*0.85) : Math.max(0, parkT - dt*1.5);
+
+    var atGateNow = cam >= gate - 2;
+    if(nowMs >= state.teaAt + MAGIC){
+      if(!state.served){
+        state.served = true; state.done = true;
+        say("Tea is served. " + hhmm(state.teaAt) + ". Magic did the boiling.");
+      }
+    }else if(atGateNow && elapsedSec(nowMs) >= JOURNEY/1000 - 0.2){
+      if(!state.done){
+        state.done = true;
+        say("Both of them at the tea room. Magic takes one second.");
+      }
+    }else if(nowMs < state.teaAt && (state.done || state.served)){
+      state.done = false; state.served = false;
+    }
+    magicOn = parked && nowMs >= state.teaAt && !isServed(nowMs);
+    stepSugar(dt);
+
+    drawSky(); drawClouds();
+    hills(0.07, H*0.26, horizon+18, "#7E9A86");
+    hills(0.15, H*0.17, horizon+46, "#5E7F6A");
+    drawFarTrees(); drawRoad(); drawMid();
+    updateTraffic(dt, t); drawTraffic(); drawObstacles(t);
+    var destX = worldToScreen(gate + 108);
+    if(destX > -420 && destX < W + 420) drawDestination(destX, t);
+
+    if(!REDUCED){
+      var radius = 10.5 * (H/235);
+      spin += (vel * SCALE) * dt / Math.max(6, radius);
+    }
+    var moving = vel > 6;
+    var hustle = Math.min(1.85, vel / SCHED);
+    var jolt = (activeBlock && activeBlock.kind === "bumps" && vel > 4) ? 2.6 : 1;
+    var bounce = 0;
+    if(!REDUCED && moving) bounce = (Math.sin(t*0.026*jolt)*1.5*jolt + Math.sin(t*0.049)*0.8) * Math.max(hustle, 0.35);
+    else if(!REDUCED && idling) bounce = Math.sin(t*0.01)*0.4;
+    var milkLane = 0.78;
+    var sugarLane = 0.66;
+    var ls = H/235;
+    var dest = worldToScreen(gateCam() + 48);
+    var ds = H/250;
+    var pad = dest + 6*ds;
+    var dirtY = roadY + 18*ds;
+    var lift = parkT * Math.max(24, laneY(milkLane) - dirtY);
+    var lx = ANCHOR*W * (1 - parkT) + (pad + 24*ds) * parkT;
+    var ly = bounce - lift + shoulder * 14 * SCALE;
+    var sx = worldToScreen(sugarX) * (1 - parkT) + (pad - 88*ds) * parkT;
+    var sugarBounce = bounce * 0.85 * (1 - parkT) + (laneY(milkLane) - laneY(sugarLane) - lift) * parkT;
+    var leftEdge = Math.min(sx - 40*ls*0.78, lx - 62*ls);
+    var rightEdge = Math.max(sx + 40*ls*0.78, lx + 62*ls);
+    var shift = leftEdge < 16 ? 16 - leftEdge : 0;
+    if(rightEdge + shift > W - 16) shift = (W - 16) - rightEdge;
+    drawSugarTruck(sx + shift, sugarBounce, sugarSpin, !idling && moving, sugarSnag, sugarLane);
+    drawLorry(lx + shift, ly, spin, moving, flatTyre ? 0.06 : 0, milkLane);
+    if(shoulder > 0.45){
+      var ps = H/250;
+      person(lx + shift - 54*ls, laneY(milkLane) + 8 + shoulder*6, ps*0.92, "#3D342C", null);
+    }
+    drawPuffs(dt);
+    render();
+    requestAnimationFrame(frame);
+  }
+
+  resize(); resizeIfNeeded();
+  placeOnSchedule();
+  if(isServed()){ state.done = true; state.served = true; }
+  else if(progress() >= 1) state.done = true;
+  say(openingLine());
+  render();
+  document.addEventListener("visibilitychange", function(){
+    if(document.hidden) return;
+    placeOnSchedule();
+    last = performance.now();
+  });
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
