@@ -432,8 +432,8 @@
   function scheduleNext(){ nextEventAt = Date.now() + (18 + Math.random()*14)*1000; }
   function sortedLine(o){
     var tea = hhmm(state.teaAt);
-    if(o.kind==="cows") return "The cows have left the road. Upwards. Tea still " + tea + ".";
-    if(o.kind==="goat") return "The goats followed them. Also upwards. Tea still " + tea + ".";
+    if(o.kind==="cows") return "The cows have left the road. Tea still " + tea + ".";
+    if(o.kind==="goat") return "The goats followed them off the road. Tea still " + tea + ".";
     return o.label + " sorted. Rolling again — tea unchanged at " + tea + ".";
   }
 /* ---------------- scene ---------------- */
@@ -589,7 +589,7 @@
       var x = i*S - off + rnd(i*1.7)*90, k = rnd(i*9.1), s = (H/250)*(0.9+rnd(i*4.4)*0.45);
       if(k < 0.40) acacia(x, base-6, s*1.15, false);
       else if(k < 0.58) duka(x, base-6, s, i);
-      else if(k < 0.72) cow(x, base-30, s*0.8, rnd(i+4) > 0.5);
+      else if(k < 0.72){ var cs = s*0.8; cow(x, base - cs, cs, rnd(i+4) > 0.5); }
       else if(k < 0.86) pole(x, base-6, s);
       else if(k < 0.93) { acacia(x, base-6, s*0.8, true); acacia(x+26*s, base-4, s*1.05, false); }
       else signpost(x, base-6, s);
@@ -789,15 +789,7 @@
       var y = laneY(0.70 - near*0.22);
       var ox = 0, oy = 0;
       if(o.kind==="cows" || o.kind==="goat"){
-        var lift = o.out * o.out;
-        ox = o.out * 36 * s + Math.sin(t * 0.006) * 12 * s * o.out;
-        oy = -lift * 128 * s + Math.sin(t * 0.012) * 7 * s * o.out;
-        if(o.out > 0.08){
-          ctx.globalAlpha = 0.28 * (1 - o.out);
-          ctx.fillStyle = "#141A16";
-          ctx.beginPath(); ctx.ellipse(x, y + 6 * s, 16 * s, 3.2 * s, 0, 0, 6.2832); ctx.fill();
-          ctx.globalAlpha = 1;
-        }
+        ox = o.out * 180 * s;
       }else if(o.kind==="boda"){
         ox = o.out * 240 * s + Math.sin(t*0.007)*12*s;
         oy = -o.out * 20 * s + Math.sin(t*0.011)*5*s;
@@ -811,7 +803,7 @@
       ctx.save();
       ctx.translate(ox, oy);
       if(o.kind === "cows"){
-        cow(x, y, s*1.15, true); cow(x+34*s, y + 6*s, s*1.0, true); cow(x+16*s, y - 9*s, s*0.85, false);
+        cow(x, y, s*1.15, true); cow(x+36*s, y + 3*s, s, true); cow(x+16*s, y + 5*s, s*0.85, false);
       }else if(o.kind === "goat"){
         goat(x, y, s*1.2); goat(x+22*s, y + 5*s, s*1.0);
       }else if(o.kind === "traffic"){
